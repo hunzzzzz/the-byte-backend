@@ -1,6 +1,8 @@
 package com.moira.thebyte.domain.signup.service
 
 import com.moira.thebyte.domain.signup.dto.request.SignupRequest
+import com.moira.thebyte.global.exception.ErrorCode
+import com.moira.thebyte.global.exception.TheByteException
 import com.moira.thebyte.global.jpa.repository.UserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -15,7 +17,7 @@ class SignupService(
     @Transactional(readOnly = true)
     fun checkNickname(nickname: String) {
         if (userRepository.existsUserByNickname(nickname)) {
-            // TODO: 예외 처리
+            throw TheByteException(ErrorCode.ALREADY_USING_NICKNAME)
         }
     }
 
@@ -25,7 +27,7 @@ class SignupService(
     @Transactional(readOnly = true)
     fun checkEmail(email: String) {
         if (userRepository.existsUserByEmail(email)) {
-            // TODO: 예외 처리
+            throw TheByteException(ErrorCode.ALREADY_USING_EMAIL)
         }
     }
 
