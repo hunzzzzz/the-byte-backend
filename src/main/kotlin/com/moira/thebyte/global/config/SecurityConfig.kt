@@ -1,0 +1,51 @@
+package com.moira.thebyte.global.config
+
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
+import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
+import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.web.SecurityFilterChain
+
+@Configuration
+@EnableMethodSecurity(prePostEnabled = true)
+@EnableWebSecurity
+class SecurityConfig {
+    @Bean
+    fun passwordEncoder() = BCryptPasswordEncoder()
+
+    @Bean
+    fun authenticationManager(authenticationConfiguration: AuthenticationConfiguration): AuthenticationManager? =
+        authenticationConfiguration.authenticationManager
+
+    @Bean
+    fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
+        http
+            // 1. CSRF, CORS, Login, Basic 인증 비활성화
+            .csrf { it.disable() }
+            .cors { }
+            .formLogin { it.disable() }
+            .httpBasic { it.disable() }
+            // 2. 세션 관리: STATELESS (JWT 기반이므로)
+            .sessionManagement { session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
+            // 3. 인가 규칙 설정
+            .authorizeHttpRequests { authorize ->
+                authorize
+                    .requestMatchers(HttpMethod.GET, "/api/signup/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/signup/**").permitAll()
+                    .anyRequest().authenticated()
+            }
+        // 4. 예외 처리 핸들러 등록
+//            .exceptionHandling { it.accessDeniedHandler(customAccessDeniedHandler) }
+        // 5. 필터 추가
+//            .addFilterBefore(exceptionHandlerFilter, UsernamePasswordAuthenticationFilter::class.java)
+//            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+
+        return http.build()
+    }
+}
