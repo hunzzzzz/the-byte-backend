@@ -1,5 +1,6 @@
 package com.moira.thebyte.global.config
 
+import com.moira.thebyte.global.auth.filter.JwtAuthenticationFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
@@ -11,11 +12,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity
-class SecurityConfig {
+class SecurityConfig(
+    private val jwtAuthenticationFilter: JwtAuthenticationFilter
+) {
     @Bean
     fun passwordEncoder() = BCryptPasswordEncoder()
 
@@ -38,13 +42,14 @@ class SecurityConfig {
                 authorize
                     .requestMatchers(HttpMethod.GET, "/api/signup/**").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/signup/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/login/**").permitAll()
                     .anyRequest().authenticated()
             }
-        // 4. 예외 처리 핸들러 등록
+            // 4. 예외 처리 핸들러 등록
 //            .exceptionHandling { it.accessDeniedHandler(customAccessDeniedHandler) }
-        // 5. 필터 추가
+            // 5. 필터 추가
 //            .addFilterBefore(exceptionHandlerFilter, UsernamePasswordAuthenticationFilter::class.java)
-//            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
 
         return http.build()
     }
