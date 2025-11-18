@@ -1,6 +1,7 @@
 package com.moira.thebyte.domain.signup.dto.request
 
 import com.moira.thebyte.global.jpa.entity.User
+import org.springframework.security.crypto.password.PasswordEncoder
 
 data class SignupRequest(
     val name: String,
@@ -9,13 +10,13 @@ data class SignupRequest(
     val email: String,
     val password: String,
 ) {
-    fun toUser(): User {
+    fun toUser(passwordEncoder: PasswordEncoder): User {
         return User(
             name = this.name,
             nickname = this.nickname,
             phone = this.phone,
             email = this.email,
-            password = this.password
+            password = passwordEncoder.encode(this.password)
         )
     }
 }

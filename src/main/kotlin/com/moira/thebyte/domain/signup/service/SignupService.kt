@@ -4,11 +4,13 @@ import com.moira.thebyte.domain.signup.dto.request.SignupRequest
 import com.moira.thebyte.global.exception.ErrorCode
 import com.moira.thebyte.global.exception.TheByteException
 import com.moira.thebyte.global.jpa.repository.UserRepository
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class SignupService(
+    private val passwordEncoder: PasswordEncoder,
     private val userRepository: UserRepository
 ) {
     /**
@@ -36,7 +38,7 @@ class SignupService(
      */
     @Transactional
     fun signup(request: SignupRequest) {
-        val user = request.toUser()
+        val user = request.toUser(passwordEncoder = passwordEncoder)
 
         userRepository.save(user)
     }
