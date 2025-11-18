@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.moira"
-version = "0.0.1-SNAPSHOT"
+version = "1.0.0"
 description = "the-byte"
 
 java {
@@ -21,15 +21,24 @@ repositories {
 }
 
 dependencies {
+    // database
+    runtimeOnly("com.mysql:mysql-connector-j")
+    // jwt
+    implementation("io.jsonwebtoken:jjwt-api:0.12.6")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.6")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.6")
+    // jpa
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-security")
-    implementation("org.springframework.boot:spring-boot-starter-web")
+    // kotlin
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    runtimeOnly("com.mysql:mysql-connector-j")
+    // security
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    // web
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    // test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-    testImplementation("org.springframework.security:spring-security-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
