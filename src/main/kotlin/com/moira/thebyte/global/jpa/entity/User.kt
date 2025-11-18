@@ -38,9 +38,9 @@ class User(
     val password: String,
 
     @Column(name = "refresh_token", columnDefinition = "TEXT", nullable = true)
-    val refreshToken: String? = null,
+    var refreshToken: String? = null,
 
     @Column(name = "last_login_at", nullable = true)
-    val lastLoginAt: ZonedDateTime? = null
+    var lastLoginAt: ZonedDateTime? = null
 ) : BaseEntity() {
 }
