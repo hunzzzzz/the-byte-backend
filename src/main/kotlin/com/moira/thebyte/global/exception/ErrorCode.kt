@@ -53,4 +53,9 @@ enum class ErrorCode(val code: String, val message: String, val httpStatus: Http
         message = "이메일 혹은 비밀번호를 잘못 입력하였습니다.",
         httpStatus = HttpStatus.BAD_REQUEST
     ),
+    USER_NOT_FOUND(
+        code = "U0004",
+        message = "존재하지 않는 유저입니다.",
+        httpStatus = HttpStatus.BAD_REQUEST
+    )
 }
