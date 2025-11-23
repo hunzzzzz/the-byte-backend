@@ -8,7 +8,7 @@ data class QuestionAddRequest(
     private val title: String,
     private val content: String,
     private val aiAnswer: Boolean,
-    val files: List<MultipartFile> = emptyList()
+    private val files: List<MultipartFile> = emptyList()
 ) {
     fun toQuestion(questionBy: User): Question {
         return Question(

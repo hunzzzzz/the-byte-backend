@@ -29,5 +29,4 @@ class LoginHistory(
 
     @Column(name = "login_at", nullable = false)
     var loginAt: ZonedDateTime = ZonedDateTime.now()
-) {
-}
+)

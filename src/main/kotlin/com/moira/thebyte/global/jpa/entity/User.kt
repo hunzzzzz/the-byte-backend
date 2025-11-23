@@ -42,5 +42,4 @@ class User(
 
     @Column(name = "last_login_at", nullable = true)
     var lastLoginAt: ZonedDateTime? = null
-) : BaseEntity() {
-}
+) : BaseEntity()
