@@ -12,6 +12,9 @@ import org.springframework.transaction.annotation.Transactional
 class LoginHistoryService(
     private val loginHistoryRepository: LoginHistoryRepository
 ) {
+    /**
+     * 로그인 성공 기록 저장
+     */
     @Transactional(propagation = Propagation.REQUIRED)
     fun saveSuccessHistory(user: User, ipAddress: String, userAgent: String) {
         val loginHistory = LoginHistory(
@@ -24,6 +27,9 @@ class LoginHistoryService(
         loginHistoryRepository.save(loginHistory)
     }
 
+    /**
+     * 로그인 실패 기록 저장
+     */
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     fun saveFailureHistory(user: User, ipAddress: String, userAgent: String) {
         val loginHistory = LoginHistory(

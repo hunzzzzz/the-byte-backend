@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class ProfileController {
+    /**
+     * 내 프로필 조회
+     */
     @GetMapping("/api/me/simple")
     fun getSimpleProfile(@UserPrincipal simpleUserAuth: SimpleUserAuth): ResponseEntity<SimpleUserAuth> {
         return ResponseEntity.ok(simpleUserAuth)

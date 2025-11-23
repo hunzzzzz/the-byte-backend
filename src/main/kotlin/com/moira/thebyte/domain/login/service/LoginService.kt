@@ -23,6 +23,9 @@ class LoginService(
     private val passwordEncoder: PasswordEncoder,
     private val userRepository: UserRepository
 ) {
+    /**
+     * 로그인
+     */
     @Transactional
     fun login(
         request: LoginRequest,
