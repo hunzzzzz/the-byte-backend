@@ -1,9 +1,10 @@
 plugins {
-    kotlin("jvm") version "1.9.25"
-    kotlin("plugin.spring") version "1.9.25"
     id("org.springframework.boot") version "3.5.7"
     id("io.spring.dependency-management") version "1.1.7"
-    kotlin("plugin.jpa") version "1.9.25"
+    id("com.google.devtools.ksp") version "2.2.10-2.0.2"
+    kotlin("jvm") version "2.2.10"
+    kotlin("plugin.spring") version "2.2.10"
+    kotlin("plugin.jpa") version "2.2.10"
 }
 
 group = "com.moira"
@@ -20,18 +21,24 @@ repositories {
     mavenCentral()
 }
 
+val jjwtVersion = "0.12.6"
+val queryDslVersion = "7.0"
+
 dependencies {
     // database
     runtimeOnly("com.mysql:mysql-connector-j")
     // jwt
-    implementation("io.jsonwebtoken:jjwt-api:0.12.6")
-    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.6")
-    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.6")
+    implementation("io.jsonwebtoken:jjwt-api:${jjwtVersion}")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:${jjwtVersion}")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:${jjwtVersion}")
     // jpa
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     // kotlin
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    // querydsl
+    implementation("io.github.openfeign.querydsl:querydsl-jpa:${queryDslVersion}")
+    ksp("io.github.openfeign.querydsl:querydsl-ksp-codegen:${queryDslVersion}")
     // security
     implementation("org.springframework.boot:spring-boot-starter-security")
     // web
